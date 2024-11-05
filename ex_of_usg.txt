@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include "qzkad_v1.h"
+
+int main() {
+    void *memory = NULL;
+    size_t size = 100;
+    QzkadResult result;
+
+    // Allocate memory using malloc
+    result = qzkad_v1(1, memory, 0, size);
+    if (result.status == 0) {
+        memory = result.ptr; // Successfully allocated
+    }
+    printf("malloc: %s\n", result.message);
+
+    // Allocate memory using calloc
+    result = qzkad_v1(2, memory, 5, 20);
+    if (result.status == 0) {
+        memory = result.ptr; // Successfully allocated
+    }
+    printf("calloc: %s\n", result.message);
+
+    // Reallocate memory
+    result = qzkad_v1(3, memory, 0, 200);
+    if (result.status == 0) {
+        memory = result.ptr; // Successfully reallocated
+    }
+    printf("realloc: %s\n", result.message);
+
+    // Free the memory
+    result = qzkad_v1(4, memory, 0, 0);
+    memory = result.ptr; // Now NULL
+    printf("free: %s\n", result.message);
+
+    return 0;
+}
+
